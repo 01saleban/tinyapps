@@ -11,7 +11,7 @@ const users = {
  "user2RandomID": {
     id: "user2RandomID", 
     email: "user2@example.com", 
-    password: "dishwasher-funk"
+    password: "123"
   }
 }
 
@@ -49,9 +49,26 @@ const getEmailByUserID = (userID) => {
 }
 
 const urlDatabase = {
-  "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com"
+  b6UTxQ: {
+    longURL: "https://www.tsn.ca",
+    userID: "userRandomID"
+},
+i3BoGr: {
+    longURL: "https://www.google.ca",
+    userID: "user2RandomID"
+}
 };
+
+function urlsForUser(id) {
+  let filteredUrls = {};
+  for (let shortURL in urlDatabase) {
+    let userID = urlDatabase[shortURL].userID;
+    if (userID === id) {
+      filteredUrls[shortURL] = urlDatabase[shortURL];
+    }
+  }
+  return filteredUrls;
+}
 
 app.get("/", (req, res) => {
   res.redirect("urls");
@@ -88,7 +105,7 @@ app.post("/urls", (req, res) => {
   const longURL = req.body.longURL
   urlDatabase[shortURL] = req.body.longURL;
   res.redirect(`/urls/${shortURL}`);
-  console.log(req.body); // Log the POST request body to the console
+  console.log(req.body); 
 });
 
 app.get("/urls/:shortURL", (req, res) => {
@@ -120,7 +137,6 @@ app.get("/u/:shortURL", (req, res) => {
 
 app.get("/register", function (req, res) {
   //("REGISTER PAGE TEST");
-  // const templatevars = {username:null}
   if (req.cookies["username"]) {
     return res.redirect("/urls");
   }
@@ -187,9 +203,6 @@ app.post("/urls/:id") , (req, res) => {
   res.redirect("/urls")
 }
 
-app.post("/urls/:id" , (req, res) => {
-  res.redirect("/urls");
-});
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
